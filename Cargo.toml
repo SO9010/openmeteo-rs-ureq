@@ -2,6 +2,11 @@
 name = "openmeteo-rs-ureq"
 version = "0.1.0"
 edition = "2024"
+description = "A Rust client for the Open-Meteo API using ureq"
+license = "MIT"
+license-file = "LICENSE"
+keywords = ["weather", "forecast", "historical-weather", "climate", "rust", "sdk", "api-client", "ureq"]
+categories = ["api-bindings", "data-processing", "environment", "scientific-computing"]
 
 [dependencies]
 flatbuffers = "25.2.10"

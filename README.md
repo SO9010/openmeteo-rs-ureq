@@ -29,53 +29,38 @@ openmeteo-rs-ureq = "0.1.0"  # replace with current version
 ### Basic Weather Forecast
 
 ```rust
-use openmeteo_rs_ureq::{Client, WeatherForecastRequest};
+use openmeteo_rs_ureq::{OpenMeteoClient, WeatherRequest};
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::new();
+fn main() {
+    let client = OpenMeteoClient::default();
+    let request = WeatherRequest::new(52.52, 13.41)
+        .add_hourly("temperature_2m")
+        .add_hourly("relative_humidity_2m")
+        .add_daily("temperature_2m_max")
+        .add_daily("temperature_2m_min")
+        .add_current("temperature_2m")
+        .temperature_unit("celsius")
+        .wind_speed_unit("kmh");
     
-    let forecast = client.weather_forecast(
-        WeatherForecastRequest::new()
-            .latitude(52.52)
-            .longitude(13.41)
-            .current(vec!["temperature_2m", "relative_humidity_2m"])
-            .hourly(vec!["temperature_2m", "precipitation_probability"])
-            .daily(vec!["temperature_2m_max", "temperature_2m_min"])
-            .timezone("Europe/Berlin")
-    )?;
-    
-    println!("Current temperature: {} °C", forecast.current().unwrap().temperature_2m().unwrap());
-    
-    // Access hourly and daily data
-    for hour in forecast.hourly().unwrap().iter() {
-        println!("Time: {}, Temp: {} °C", hour.time(), hour.temperature_2m().unwrap());
-    }
-    
-    Ok(())
+    println!("Got weather forecast for 52.52, 13.41: {:#?}\n", client.get_weather(request).unwrap());
 }
 ```
 
 ### Historical Weather Data
 
 ```rust
-use openmeteo_rs_ureq::{Client, HistoricalWeatherRequest};
-use chrono::{NaiveDate};
+use openmeteo_rs_ureq::{HistoricalWeatherRequest, OpenMeteoClient};
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let client = Client::new();
+fn main() {
+    let client = OpenMeteoClient::default();
+    let request = HistoricalWeatherRequest::new(52.52, 13.41)
+        .add_hourly("temperature_2m")
+        .add_daily("temperature_2m_max")
+        .start_date("2022-01-01")
+        .end_date("2022-01-10")
+        .temperature_unit("celsius");
     
-    let historical = client.historical_weather(
-        HistoricalWeatherRequest::new()
-            .latitude(40.71)
-            .longitude(-74.01)
-            .start_date(NaiveDate::from_ymd_opt(2022, 1, 1).unwrap())
-            .end_date(NaiveDate::from_ymd_opt(2022, 1, 7).unwrap())
-            .daily(vec!["temperature_2m_max", "precipitation_sum"])
-    )?;
-    
-    // Process historical data
-    
-    Ok(())
+    println!("Got historical weather for 52.52, 13.41: {:#?}\n", client.get_historical_weather(request).unwrap());
 }
 ```
 
