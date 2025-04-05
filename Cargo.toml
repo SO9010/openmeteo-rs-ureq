@@ -5,7 +5,7 @@ edition = "2024"
 description = "A Rust client for the Open-Meteo API using ureq"
 license = "MIT"
 license-file = "LICENSE"
-keywords = ["weather", "forecast", "historical-weather", "climate", "rust", "sdk", "api-client", "ureq"]
+keywords = ["weather", "forecast", "historical-weather", "climate"]
 categories = ["api-bindings", "data-processing", "environment", "scientific-computing"]
 
 [dependencies]
