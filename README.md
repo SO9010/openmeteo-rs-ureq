@@ -1,7 +1,6 @@
 # Open-Meteo API Rust SDK
 
 [![Crates.io](https://img.shields.io/crates/v/openmeteo-rs-ureq.svg)](https://crates.io/crates/openmeteo-rs-ureq)
-[![Documentation](https://docs.rs/openmeteo-rs-ureq/badge.svg)](https://docs.rs/openmeteo-rs-ureq)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Rust SDK for the [Open-Meteo](https://open-meteo.com/) Weather API using the `ureq` HTTP client.
