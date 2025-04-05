@@ -1,5 +1,4 @@
-use ureq::Agent;
-use std::{io::Read, time::Duration};
+use std::io::Read;
 
 use crate::{
     air_quality::AirQualityRequest, climate_change::ClimateChangeRequest, elevation::{ElevationRequest, ElevationResponse}, ensemble_weather::EnsembleWeatherRequest, flood::FloodRequest, geocoding::{GeocodingRequest, GeocodingResponse}, historical_weather::HistoricalWeatherRequest, marine_weather::MarineWeatherRequest, satellite_radiation::SatelliteRadiationRequest, weather::WeatherRequest, weather_api_generated::openmeteo_sdk::{size_prefixed_root_as_weather_api_response, WeatherApiResponse}, OpenMeteoClient
