@@ -1,0 +1,10 @@
+[package]
+name = "openmeteo-rs-ureq"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+flatbuffers = "25.2.10"
+serde = "1.0.219"
+serde_derive = "1.0.219"
+ureq = {version = "3.0.10", features = ["json"]}
