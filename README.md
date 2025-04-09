@@ -41,8 +41,11 @@ fn main() {
         .add_current("temperature_2m")
         .temperature_unit("celsius")
         .wind_speed_unit("kmh");
-    
-    println!("Got weather forecast for 52.52, 13.41: {:#?}\n", client.get_weather(request).unwrap());
+
+    println!(
+        "Got weather forecast for 52.52, 13.41: {:#?}\n",
+        client.get_weather(request).unwrap().decode_buffer()
+    );
 }
 ```
 
@@ -59,8 +62,8 @@ fn main() {
         .start_date("2022-01-01")
         .end_date("2022-01-10")
         .temperature_unit("celsius");
-    
-    println!("Got historical weather for 52.52, 13.41: {:#?}\n", client.get_historical_weather(request).unwrap());
+
+    println!("Got historical weather for 52.52, 13.41: {:#?}\n", client.get_historical_weather(request).unwrap().decode_buffer());
 }
 ```
 
@@ -87,4 +90,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [Open-Meteo](https://open-meteo.com/) for providing the free weather API
 - The [Open-Meteo SDK](https://github.com/open-meteo/sdk) project that this implementation is based on
-

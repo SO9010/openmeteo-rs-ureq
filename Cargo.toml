@@ -1,6 +1,6 @@
 [package]
 name = "openmeteo-rs-ureq"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "A Rust client for the Open-Meteo API using ureq"
 license = "MIT"
@@ -11,4 +11,4 @@ keywords = ["weather", "forecast", "historical-weather", "climate"]
 flatbuffers = "25.2.10"
 serde = "1.0.219"
 serde_derive = "1.0.219"
-ureq = {version = "3.0.10", features = ["json"]}
+ureq = { version = "3.0.10", features = ["json"] }

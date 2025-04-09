@@ -6,6 +6,12 @@ fn main() {
         .add_hourly("temperature_2m")
         .add_daily("temperature_2m_max")
         .add_daily("temperature_2m_min");
-    
-    println!("Got ensemble weather for 52.52, 13.41: {:#?}\n", client.get_ensemble_weather(request).unwrap());
+
+    println!(
+        "Got ensemble weather for 52.52, 13.41: {:#?}\n",
+        client
+            .get_ensemble_weather(request)
+            .unwrap()
+            .decode_buffer()
+    );
 }

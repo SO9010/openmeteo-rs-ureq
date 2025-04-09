@@ -7,6 +7,9 @@ fn main() {
         .add_daily("river_discharge_max")
         .add_daily("river_discharge_min")
         .add_daily("river_discharge_p75");
-    
-    println!("Got flood information for 52.52, 13.41: {:#?}\n", client.get_flood(request).unwrap());
+
+    println!(
+        "Got flood information for 52.52, 13.41: {:#?}\n",
+        client.get_flood(request).unwrap().decode_buffer()
+    );
 }

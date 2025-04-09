@@ -1,4 +1,3 @@
-
 /*
 https://geocoding-api.open-meteo.com/v1/search?
     name=Berlin
@@ -9,11 +8,11 @@ https://geocoding-api.open-meteo.com/v1/search?
 */
 /// https://open-meteo.com/en/docs/geocoding-api
 pub struct GeocodingRequest {
-    pub name: String,                       // E.g: "Berlin"
-    pub count: Option<u32>,                 // E.g: 1
-    pub language: Option<String>,           // E.g: "en"
-    pub format: Option<String>,             // E.g: "json"
-    pub country_code: Option<String>,       // E.g: "DE"
+    pub name: String,                 // E.g: "Berlin"
+    pub count: Option<u32>,           // E.g: 1
+    pub language: Option<String>,     // E.g: "en"
+    pub format: Option<String>,       // E.g: "json"
+    pub country_code: Option<String>, // E.g: "DE"
 }
 
 impl GeocodingRequest {
@@ -48,21 +47,21 @@ impl GeocodingRequest {
     }
 }
 
-// TODO: FINISH ALL OF THE 
+// TODO: FINISH ALL OF THE
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeocodingResponse {
-    pub results: Vec<Result>,
+    pub results: Vec<Rslt>,
     #[serde(rename = "generationtime_ms")]
     pub generationtime_ms: f64,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Result {
+pub struct Rslt {
     pub id: i64,
     pub name: String,
     pub latitude: f64,

@@ -10,6 +10,9 @@ fn main() {
         .add_current("temperature_2m")
         .temperature_unit("celsius")
         .wind_speed_unit("kmh");
-    
-    println!("Got weather forecast for 52.52, 13.41: {:#?}\n", client.get_weather(request).unwrap());
+
+    println!(
+        "Got weather forecast for 52.52, 13.41: {:#?}\n",
+        client.get_weather(request).unwrap().decode_buffer()
+    );
 }

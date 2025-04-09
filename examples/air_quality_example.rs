@@ -6,6 +6,8 @@ fn main() {
         .add_hourly("pm10")
         .add_current("pm10")
         .temporal_resolution("hourly");
-    println!("Got air quality for 52.52, 13.41: {:#?}\n", client.get_air_quality(request).unwrap());
+    println!(
+        "Got air quality for 52.52, 13.41: {:#?}\n",
+        client.get_air_quality(request).unwrap().decode_buffer()
+    );
 }
-

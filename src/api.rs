@@ -1,13 +1,27 @@
 use std::io::Read;
 
 use crate::{
-    air_quality::AirQualityRequest, climate_change::ClimateChangeRequest, elevation::{ElevationRequest, ElevationResponse}, ensemble_weather::EnsembleWeatherRequest, flood::FloodRequest, geocoding::{GeocodingRequest, GeocodingResponse}, historical_weather::HistoricalWeatherRequest, marine_weather::MarineWeatherRequest, satellite_radiation::SatelliteRadiationRequest, weather::WeatherRequest, weather_api_generated::openmeteo_sdk::{size_prefixed_root_as_weather_api_response, WeatherApiResponse}, OpenMeteoClient
+    OpenMeteoClient, WeatherData,
+    air_quality::AirQualityRequest,
+    climate_change::ClimateChangeRequest,
+    elevation::{ElevationRequest, ElevationResponse},
+    ensemble_weather::EnsembleWeatherRequest,
+    flood::FloodRequest,
+    geocoding::{GeocodingRequest, GeocodingResponse},
+    historical_weather::HistoricalWeatherRequest,
+    marine_weather::MarineWeatherRequest,
+    satellite_radiation::SatelliteRadiationRequest,
+    weather::WeatherRequest,
 };
 
 /// Weather forcast
 impl OpenMeteoClient {
-    pub fn get_weather(&self, request: WeatherRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
-        let mut url = format!("https://api.open-meteo.com/v1/forecast?latitude={}&longitude={}", request.latitude, request.longitude).to_string(); 
+    pub fn get_weather(&self, request: WeatherRequest) -> Result<WeatherData, ureq::Error> {
+        let mut url = format!(
+            "https://api.open-meteo.com/v1/forecast?latitude={}&longitude={}",
+            request.latitude, request.longitude
+        )
+        .to_string();
         if let Some(daily) = request.daily {
             let daily_str = daily.join(",");
             url.push_str(&format!("&daily={}", daily_str));
@@ -60,26 +74,21 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Historical weather
 impl OpenMeteoClient {
-    pub fn get_historical_weather(&self, request: HistoricalWeatherRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
-        let mut url = format!("https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}", request.latitude, request.longitude).to_string(); 
+    pub fn get_historical_weather(
+        &self,
+        request: HistoricalWeatherRequest,
+    ) -> Result<WeatherData, ureq::Error> {
+        let mut url = format!(
+            "https://archive-api.open-meteo.com/v1/archive?latitude={}&longitude={}",
+            request.latitude, request.longitude
+        )
+        .to_string();
         if let Some(start_date) = request.start_date {
             url.push_str(&format!("&start_date={}", start_date));
         }
@@ -126,26 +135,21 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Marine weather
 impl OpenMeteoClient {
-    pub fn get_marine_weather(&self, request: MarineWeatherRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
-        let mut url = format!("https://marine-api.open-meteo.com/v1/marine?latitude={}&longitude={}", request.latitude, request.longitude).to_string(); 
+    pub fn get_marine_weather(
+        &self,
+        request: MarineWeatherRequest,
+    ) -> Result<WeatherData, ureq::Error> {
+        let mut url = format!(
+            "https://marine-api.open-meteo.com/v1/marine?latitude={}&longitude={}",
+            request.latitude, request.longitude
+        )
+        .to_string();
         if let Some(daily) = request.daily {
             let daily_str = daily.join(",");
             url.push_str(&format!("&daily={}", daily_str));
@@ -209,26 +213,21 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Ensemble weather
 impl OpenMeteoClient {
-    pub fn get_ensemble_weather(&self, request: EnsembleWeatherRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
-        let mut url = format!("https://ensemble-api.open-meteo.com/v1/ensemble?latitude={}&longitude={}", request.latitude, request.longitude).to_string(); 
+    pub fn get_ensemble_weather(
+        &self,
+        request: EnsembleWeatherRequest,
+    ) -> Result<WeatherData, ureq::Error> {
+        let mut url = format!(
+            "https://ensemble-api.open-meteo.com/v1/ensemble?latitude={}&longitude={}",
+            request.latitude, request.longitude
+        )
+        .to_string();
         if let Some(daily) = request.daily {
             let daily_str = daily.join(",");
             url.push_str(&format!("&daily={}", daily_str));
@@ -287,26 +286,21 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Satellite radiation
 impl OpenMeteoClient {
-    pub fn get_satellite_radiation(&self, request: SatelliteRadiationRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
-        let mut url = format!("https://satellite-api.open-meteo.com/v1/archive?latitude={}&longitude={}", request.latitude, request.longitude).to_string(); 
+    pub fn get_satellite_radiation(
+        &self,
+        request: SatelliteRadiationRequest,
+    ) -> Result<WeatherData, ureq::Error> {
+        let mut url = format!(
+            "https://satellite-api.open-meteo.com/v1/archive?latitude={}&longitude={}",
+            request.latitude, request.longitude
+        )
+        .to_string();
         if let Some(daily) = request.daily {
             let daily_str = daily.join(",");
             url.push_str(&format!("&daily={}", daily_str));
@@ -356,25 +350,16 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Climate Change
 impl OpenMeteoClient {
-    pub fn get_climate_change(&self, request: ClimateChangeRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
+    pub fn get_climate_change(
+        &self,
+        request: ClimateChangeRequest,
+    ) -> Result<WeatherData, ureq::Error> {
         let mut url = format!(
             "https://climate-api.open-meteo.com/v1/climate?latitude={}&longitude={}",
             request.latitude, request.longitude
@@ -409,25 +394,13 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
-    } 
+        Ok(WeatherData::from_buffer(bytes))
+    }
 }
 
 /// Air Quality
 impl OpenMeteoClient {
-    pub fn get_air_quality(&self, request: AirQualityRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
+    pub fn get_air_quality(&self, request: AirQualityRequest) -> Result<WeatherData, ureq::Error> {
         let mut url = format!(
             "https://air-quality-api.open-meteo.com/v1/air-quality?latitude={}&longitude={}",
             request.latitude, request.longitude
@@ -469,25 +442,13 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Flood
 impl OpenMeteoClient {
-    pub fn get_flood(&self, request: FloodRequest) -> Result<WeatherApiResponse<'_>, ureq::Error> {
+    pub fn get_flood(&self, request: FloodRequest) -> Result<WeatherData, ureq::Error> {
         let mut url = format!(
             "https://flood-api.open-meteo.com/v1/flood?latitude={}&longitude={}",
             request.latitude, request.longitude
@@ -513,34 +474,27 @@ impl OpenMeteoClient {
         let response = self.agent.get(&url).call()?;
         let mut bytes = Vec::new();
         response.into_body().into_reader().read_to_end(&mut bytes)?;
-        
-        let bytes = Box::leak(bytes.into_boxed_slice());
-
-        let message = match size_prefixed_root_as_weather_api_response(bytes) {
-            Ok(weather) => {
-                weather.clone()
-            },
-            Err(e) => {
-                return Err(ureq::Error::BadUri(format!("Failed to parse FlatBuffers message: {}", e)));
-            }
-        };
-        
-        Ok(message)
+        Ok(WeatherData::from_buffer(bytes))
     }
 }
 
 /// Elevation
 impl OpenMeteoClient {
-    pub fn get_elevation(&self, request: ElevationRequest) -> Result<ElevationResponse, ureq::Error> {
+    pub fn get_elevation(
+        &self,
+        request: ElevationRequest,
+    ) -> Result<ElevationResponse, ureq::Error> {
         let url = format!(
             "https://api.open-meteo.com/v1/elevation?latitude={}&longitude={}",
             request.latitude, request.longitude
         );
 
-        let body: ElevationResponse = self.agent.get(url)
-        .call()?
-        .body_mut()
-        .read_json::<ElevationResponse>()?;
+        let body: ElevationResponse = self
+            .agent
+            .get(url)
+            .call()?
+            .body_mut()
+            .read_json::<ElevationResponse>()?;
 
         Ok(body)
     }
@@ -548,8 +502,14 @@ impl OpenMeteoClient {
 
 /// Geocoding
 impl OpenMeteoClient {
-    pub fn get_geocoding(&self, request: GeocodingRequest) -> Result<GeocodingResponse, ureq::Error> {
-        let mut url = format!("https://geocoding-api.open-meteo.com/v1/search?name={}", request.name);
+    pub fn get_geocoding(
+        &self,
+        request: GeocodingRequest,
+    ) -> Result<GeocodingResponse, ureq::Error> {
+        let mut url = format!(
+            "https://geocoding-api.open-meteo.com/v1/search?name={}",
+            request.name
+        );
         if let Some(count) = request.count {
             url.push_str(&format!("&count={}", count));
         }
@@ -563,10 +523,12 @@ impl OpenMeteoClient {
             url.push_str(&format!("&countryCode={}", country_code));
         }
 
-        let body: GeocodingResponse = self.agent.get(url)
-        .call()?
-        .body_mut()
-        .read_json::<GeocodingResponse>()?;
+        let body: GeocodingResponse = self
+            .agent
+            .get(url)
+            .call()?
+            .body_mut()
+            .read_json::<GeocodingResponse>()?;
 
         Ok(body)
     }

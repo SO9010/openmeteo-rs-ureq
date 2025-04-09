@@ -8,6 +8,9 @@ fn main() {
         .add_hourly("wave_period")
         .add_daily("wave_height_max")
         .forecast_days(5);
-    
-    println!("Got marine weather for 41.0, -7.5: {:#?}\n", client.get_marine_weather(request).unwrap());
+
+    println!(
+        "Got marine weather for 41.0, -7.5: {:#?}\n",
+        client.get_marine_weather(request).unwrap().decode_buffer()
+    );
 }
