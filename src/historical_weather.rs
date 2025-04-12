@@ -18,7 +18,7 @@ https://archive-api.open-meteo.com/v1/archive?
     &azimuth=2
 */
 /// https://open-meteo.com/en/docs/historical-weather-api
-#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct HistoricalWeatherRequest {
     pub latitude: f64,
     pub longitude: f64,

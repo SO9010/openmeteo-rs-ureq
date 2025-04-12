@@ -5,7 +5,7 @@ use serde_derive::{Deserialize, Serialize};
 https://air-quality-api.open-meteo.com/v1/air-quality?latitude=52.52&longitude=13.41&hourly=pm10,pm2_5,grass_pollen,european_aqi,us_aqi,non_methane_volatile_organic_compounds&current=us_aqi,birch_pollen,ammonia&past_days=1&forecast_days=1&domains=cams_global&timeformat=unixtime&forecast_hours=1&past_hours=1&temporal_resolution=hourly_3&cell_selection=sea
 */
 /// https://open-meteo.com/en/docs/air-quality-api
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AirQualityRequest {
     pub latitude: f64,
     pub longitude: f64,

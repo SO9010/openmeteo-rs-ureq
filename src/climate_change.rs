@@ -12,7 +12,7 @@ https://climate-api.open-meteo.com/v1/climate?
     &precipitation_unit=inch
 */
 /// https://open-meteo.com/en/docs/climate-api
-#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct ClimateChangeRequest {
     pub latitude: f64,
     pub longitude: f64,

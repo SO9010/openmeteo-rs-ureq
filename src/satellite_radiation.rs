@@ -2,7 +2,7 @@
 https://satellite-api.open-meteo.com/v1/archive?latitude=52.52&longitude=13.41&daily=sunrise&hourly=shortwave_radiation,diffuse_radiation_instant,is_day,sunshine_duration&models=eumetsat_lsa_saf_iodc,ukmo_global_deterministic_10km&tilt=1&azimuth=-1&timeformat=unixtime&forecast_hours=12&past_hours=12&temporal_resolution=hourly_3&cell_selection=sea
 */
 /// https://open-meteo.com/en/docs/satellite-radiation-api
-#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
+#[derive(Debug, Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct SatelliteRadiationRequest {
     pub latitude: f64,
     pub longitude: f64,
