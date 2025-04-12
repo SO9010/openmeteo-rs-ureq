@@ -22,6 +22,7 @@ https://marine-api.open-meteo.com/v1/marine?
     &cell_selection=sea
 */
 /// https://open-meteo.com/en/docs/marine-weather-api
+#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct MarineWeatherRequest {
     pub latitude: f64,
     pub longitude: f64,

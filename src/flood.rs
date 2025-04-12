@@ -8,6 +8,7 @@ https://flood-api.open-meteo.com/v1/flood?
     &forecast_days=31
 */
 /// https://open-meteo.com/en/docs/flood-api
+#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct FloodRequest {
     pub latitude: f64,                     // E.g: 59.91
     pub longitude: f64,                    // E.g: 10.75

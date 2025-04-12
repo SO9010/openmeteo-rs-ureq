@@ -7,6 +7,7 @@ https://api.open-meteo.com/v1/elevation?
     &longitude=13.41
 */
 /// https://open-meteo.com/en/docs/elevation-api
+#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct ElevationRequest {
     pub latitude: f64,                     // E.g: 52.52
     pub longitude: f64,                    // E.g: 13.41

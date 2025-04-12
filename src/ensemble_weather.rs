@@ -21,6 +21,7 @@ https://ensemble-api.open-meteo.com/v1/ensemble?
 
 */
 /// https://open-meteo.com/en/docs/ensemble-api
+#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct EnsembleWeatherRequest {
     pub latitude: f64,
     pub longitude: f64,

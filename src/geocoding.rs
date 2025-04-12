@@ -7,6 +7,7 @@ https://geocoding-api.open-meteo.com/v1/search?
     &countryCode=DE
 */
 /// https://open-meteo.com/en/docs/geocoding-api
+#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct GeocodingRequest {
     pub name: String,                 // E.g: "Berlin"
     pub count: Option<u32>,           // E.g: 1

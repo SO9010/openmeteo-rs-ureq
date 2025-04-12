@@ -18,6 +18,7 @@ https://api.open-meteo.com/v1/forecast?
     &end_date=2025-04-09
 */
 /// https://open-meteo.com/en/docs
+#[derive(Clone, serde_derive::Serialize, serde_derive::Deserialize)]
 pub struct WeatherRequest {
     pub latitude: f64,
     pub longitude: f64,
